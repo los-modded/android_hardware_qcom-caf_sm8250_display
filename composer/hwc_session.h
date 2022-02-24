@@ -60,6 +60,7 @@ namespace composer_V2_3 = ::android::hardware::graphics::composer::V2_3;
 using HwcDisplayCapability = composer_V2_4::IComposerClient::DisplayCapability;
 using HwcDisplayCapability_2_3 = composer_V2_3::IComposerClient::DisplayCapability;
 using HwcDisplayConnectionType = composer_V2_4::IComposerClient::DisplayConnectionType;
+using HwcClientTargetProperty = composer_V2_4::IComposerClient::ClientTargetProperty;
 
 namespace sdm {
 
@@ -242,6 +243,8 @@ class HWCSession : hwc2_device_t, HWCUEventListener, public qClient::BnQClient,
   int32_t GetDataspaceSaturationMatrix(int32_t /*Dataspace*/ int_dataspace, float *out_matrix);
   int32_t SetDisplayBrightnessScale(const android::Parcel *input_parcel);
   int32_t GetDisplayConnectionType(hwc2_display_t display, HwcDisplayConnectionType *type);
+  int32_t GetClientTargetProperty(hwc2_display_t display,
+                                  HwcClientTargetProperty *outClientTargetProperty);
 
   // Layer functions
   int32_t SetLayerBuffer(hwc2_display_t display, hwc2_layer_t layer, buffer_handle_t buffer,
@@ -489,6 +492,8 @@ class HWCSession : hwc2_device_t, HWCUEventListener, public qClient::BnQClient,
   android::status_t SetColorModeFromClient(const android::Parcel *input_parcel);
   android::status_t getComposerStatus();
   android::status_t SetStandByMode(const android::Parcel *input_parcel);
+  android::status_t GetPanelResolution(const android::Parcel *input_parcel,
+                                       android::Parcel *output_parcel);
   android::status_t SetQSyncMode(const android::Parcel *input_parcel);
   android::status_t SetIdlePC(const android::Parcel *input_parcel);
   android::status_t RefreshScreen(const android::Parcel *input_parcel);
@@ -506,6 +511,7 @@ class HWCSession : hwc2_device_t, HWCUEventListener, public qClient::BnQClient,
                                       uint32_t *out_num_requests);
   HWC2::Error PresentDisplayInternal(hwc2_display_t display);
   void HandleSecureSession();
+  void SetCpuPerfHintLargeCompCycle();
   void HandlePendingPowerMode(hwc2_display_t display, const shared_ptr<Fence> &retire_fence);
   void HandlePendingHotplug(hwc2_display_t disp_id, const shared_ptr<Fence> &retire_fence);
   bool IsPluggableDisplayConnected();
